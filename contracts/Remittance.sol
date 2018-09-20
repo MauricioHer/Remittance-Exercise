@@ -25,8 +25,6 @@ contract Remittance{
         owner=msg.sender; //fija a Alice como la dueña al crear el contrato.
     } 
     
-    function () public payable{  //función fallback.
-    }
     
     function setConfiguration(bytes32 _hash, address Carol_add, uint deadline) onlyAlice public{
             require(_hash != bytes32(0));  //el hash no debe ser vacio.
@@ -35,7 +33,7 @@ contract Remittance{
             puzzle=_hash; //guarda el hash
             Carol=Carol_add; //guarda la dirección de Carol.
             timer=deadline+block.timestamp;  //limita el tiempo en que el contrato peude ser usado.
-	    	timeOfCreation=block.timestamp; //solo para la prueba en javascript
+	    timeOfCreation=block.timestamp; //solo para la prueba en javascript
     }
     
     function withDraw(bytes32 Bob_Password, bytes32 Carol_Password) onlyCarol deadTime payable public{
@@ -51,7 +49,6 @@ contract Remittance{
         owner.transfer(address(this).balance); //retira el balance.
     }
     function emergency()public onlyAlice{  //en caso de emergencia, devuelve los fondos y destruye el contrato.
-        require(address(this).balance>0);
         selfdestruct(owner);
     }
 
